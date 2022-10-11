@@ -49,9 +49,6 @@ object Four {
   @main def runMapReduceFour(inputPath: String, outputPath: String) =
     val conf: JobConf = new JobConf(this.getClass)
     conf.setJobName("JobFour")
-    conf.set("fs.defaultFS", "local")
-    conf.set("mapreduce.job.maps", "1")
-    conf.set("mapreduce.job.reduces", "1")
     conf.setOutputKeyClass(classOf[Text])
     conf.setOutputValueClass(classOf[IntWritable])
     conf.setMapperClass(classOf[Map])

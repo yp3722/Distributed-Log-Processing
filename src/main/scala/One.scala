@@ -13,7 +13,7 @@ import scala.util.matching.Regex
 
 
 object One {
-  val mapLogger = LoggerFactory.getLogger(classOf[One.type]) //logger instantiation
+  val logger = LoggerFactory.getLogger(classOf[One.type]) //logger instantiation
   val logMsgRegexPattern =new Regex(Parameters.getLogRegex);
 
   val hrs:Boolean = Parameters.getHourly
@@ -47,14 +47,14 @@ object One {
       val line: String = value.toString
       val segments = line.split(" ")
       if (MyUtilsLib.isValidLog(line) == false) {
-        mapLogger.warn("Invalid Log message in input -> " + line)
+        logger.warn("Invalid Log message in input -> " + line)
         timeInterval.set("Invalid Log Messages : ")
         typeCount.set("1")
       } else {
         timeInterval.set(MyUtilsLib.getTimeInterval(segments(0), hrs))
         typeCount.set(getComputedValue(segments(2), line.split("[$][ ][-][ ]")(1)))
       }
-      mapLogger.debug("key:Val -> { ", timeInterval.toString + ":" + typeCount.toString+" }")
+      logger.debug("key:Val -> { ", timeInterval.toString + ":" + typeCount.toString+" }")
       output.collect(timeInterval, typeCount)
 
 
@@ -77,10 +77,9 @@ object One {
   @main def runMapReduceOne(inputPath: String, outputPath: String) =
     val conf: JobConf = new JobConf(this.getClass)
     conf.setJobName("JobOne")
-    conf.set("fs.defaultFS", "local")
-
-    conf.set("mapreduce.job.maps", "1")
-    conf.set("mapreduce.job.reduces", "1")
+//    conf.set("fs.defaultFS", "local")
+//    conf.set("mapreduce.job.maps", "1")
+//    conf.set("mapreduce.job.reduces", "1")
     conf.setOutputKeyClass(classOf[Text])
     conf.setOutputValueClass(classOf[Text])
     conf.setMapperClass(classOf[Map])
@@ -91,5 +90,5 @@ object One {
     FileInputFormat.setInputPaths(conf, new Path(inputPath)) // new Path(args[0])
     FileOutputFormat.setOutputPath(conf, new Path(outputPath))
     JobClient.runJob(conf)
-    mapLogger.info("Job One has started")
+    logger.info("Job One has started")
 }
