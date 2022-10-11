@@ -1,4 +1,6 @@
-import com.typesafe.config.{Config, ConfigFactory}
+package com.yash.utils
+
+import com.typesafe.config.ConfigFactory
 import org.slf4j.LoggerFactory
 
 object Parameters {
@@ -7,17 +9,16 @@ object Parameters {
   val config = ConfigFactory.parseResources("Override.conf").withFallback(defaultConfig).resolve()
 
   def getHourly: Boolean = {
-    try{
+    try {
       val op = config.getBoolean("StatsForLogs.hourly")
       logger.debug("Parameter Hourly : " + op)
       op
     }
-    catch
-      {
-        case e:Exception =>{
-          false
-        }
+    catch {
+      case e: Exception => {
+        false
       }
+    }
 
   }
 
@@ -52,7 +53,7 @@ object Parameters {
   def getLogMsgTypes: String = {
     try {
       val op = config.getString("StatsForLogs.logMessageTypesList")
-      logger.debug("Parameter LogMessageTypes : " +op)
+      logger.debug("Parameter LogMessageTypes : " + op)
       op
     }
     catch {

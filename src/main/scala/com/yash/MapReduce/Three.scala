@@ -1,9 +1,10 @@
-import org.apache.hadoop.conf.*
+package com.yash.MapReduce
+
+import com.yash.utils.MyUtilsLib
 import org.apache.hadoop.fs.Path
-import org.apache.hadoop.io.*
+import org.apache.hadoop.io.{IntWritable, LongWritable, Text}
 import org.apache.hadoop.mapred.*
-import org.apache.hadoop.util.*
-import org.slf4j.{Logger, LoggerFactory}
+import org.slf4j.LoggerFactory
 
 import java.io.IOException
 import java.util
@@ -12,32 +13,6 @@ import scala.util.matching.Regex
 
 object Three {
   val logger = LoggerFactory.getLogger(classOf[Three.type])
-
-  class Map extends MapReduceBase with Mapper[LongWritable, Text, Text, IntWritable] : //mapper implementation for Q1
-
-    private val logType = new Text()
-    private final val one = new IntWritable(1)
-
-    @throws[IOException]
-    def map(key: LongWritable, value: Text, output: OutputCollector[Text, IntWritable], reporter: Reporter): Unit =
-      val segments = value.toString.split(" ")
-      if (MyUtilsLib.isValidLog(value.toString) == true){
-        logType.set(segments(2))
-      }
-      else{
-        logger.warn("Invalid Log message in input -> " + value.toString)
-        logType.set("Invalid Log Messages : ")
-      }
-
-      logger.debug("Message Type : " + logType.toString)
-      output.collect(logType, one)
-
-  //reducer implementation for Q3
-  class Reduce extends MapReduceBase with Reducer[Text, IntWritable, Text, IntWritable] : //Reducer implementation for Q1
-
-    override def reduce(key: Text, values: util.Iterator[IntWritable], output: OutputCollector[Text, IntWritable], reporter: Reporter): Unit =
-      val sum = values.asScala.reduce((val1, val2) => new IntWritable(val1.get() + val2.get()))
-      output.collect(key, new IntWritable(sum.get()))
 
   @main def runMapReduceThree(inputPath: String, outputPath: String) =
     val conf: JobConf = new JobConf(this.getClass)
@@ -53,4 +28,31 @@ object Three {
     FileOutputFormat.setOutputPath(conf, new Path(outputPath))
     JobClient.runJob(conf)
     logger.info("Job Three has started")
+
+  class Map extends MapReduceBase with Mapper[LongWritable, Text, Text, IntWritable] : //mapper implementation for Q1
+
+    private final val one = new IntWritable(1)
+    private val logType = new Text()
+
+    @throws[IOException]
+    def map(key: LongWritable, value: Text, output: OutputCollector[Text, IntWritable], reporter: Reporter): Unit =
+      val segments = value.toString.split(" ")
+      if (MyUtilsLib.isValidLog(value.toString) == true) {
+        logType.set(segments(2))
+      }
+      else {
+        logger.warn("Invalid Log message in input -> " + value.toString)
+        logType.set("Invalid Log Messages : ")
+      }
+
+      logger.debug("Message Type : " + logType.toString)
+      output.collect(logType, one)
+
+  //reducer implementation for Q3
+  class Reduce extends MapReduceBase with Reducer[Text, IntWritable, Text, IntWritable] : //Reducer implementation for Q1
+
+    override def reduce(key: Text, values: util.Iterator[IntWritable], output: OutputCollector[Text, IntWritable], reporter: Reporter): Unit =
+      val sum = values.asScala.foldLeft(0)(_+_.get())
+    //val sum = values.asScala.reduce((val1, val2) => new IntWritable(val1.get() + val2.get()))
+      output.collect(key, new IntWritable(sum))
 }
