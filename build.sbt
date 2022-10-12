@@ -4,8 +4,7 @@ ThisBuild / scalaVersion := "3.1.3"
 
 lazy val root = (project in file("."))
   .settings(
-    name := "StatsForLogs",
-    //idePackagePrefix := Some("edu.uic.cs441")
+    name := "StatsForLogs"
   )
 
 val scalacticVersion = "3.2.9"
@@ -16,10 +15,10 @@ val apacheCommonIOVersion = "2.11.0"
 val hadoopVersion = "3.3.4"
 
 
-//assemblyMergeStrategy in assembly := {
-//  case PathList("META-INF", xs @ _*) => MergeStrategy.discard
-//  case x => MergeStrategy.first
-//}
+assemblyMergeStrategy in assembly := {
+  case PathList("META-INF", xs @ _*) => MergeStrategy.discard
+  case x => MergeStrategy.first
+}
 
 resolvers += Resolver.jcenterRepo
 
