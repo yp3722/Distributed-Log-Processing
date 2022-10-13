@@ -28,7 +28,7 @@ object Two {
     conf.setInputFormat(classOf[TextInputFormat])
     conf.setOutputFormat(classOf[TextOutputFormat[Text, IntWritable]])
     FileInputFormat.setInputPaths(conf, new Path(inputPath)) // new Path(args[0])
-    FileOutputFormat.setOutputPath(conf, new Path(outputPath + "-StageOne"))
+    FileOutputFormat.setOutputPath(conf, new Path(outputPath))
     logger.info("Job Two Stage One has started")
     JobClient.runJob(conf)
     logger.info("Job Two Stage One has finished")

@@ -1,6 +1,6 @@
 package com.yash
 
-import com.yash.MapReduce.{Four, One, Three}
+import com.yash.MapReduce.{Four, One, Three, Two , TwoFinal}
 
 class RunProject{
 
@@ -12,7 +12,8 @@ object RunProject {
     One.runMapReduceOne(input, output + "-One")
     Three.runMapReduceThree(input, output + "-Three")
     Four.runMapReduceFour(input, output + "-Four")
-  //Two.runMapReduceTwo(input,output+"OutputTwo")
+    Two.runMapReduceTwo(input,output+"-Output2-temp")
+    TwoFinal.runMapReduceTwoFinal(output+"-Output2-temp",output+"-Two")
 
   def main(args: Array[String]) = {
     try {
