@@ -63,33 +63,14 @@ object Two {
       if ((error == 1) && (regexInLog == 1)) 1 else 0
     }
 
-  class Map extends MapReduceBase with Mapper[LongWritable, Text, Text, IntWritable] :
 
-    private val key = new Text()
-    private val valueCount = new IntWritable(0)
-
-    //Mapper for part 1
-    @throws[IOException]
-    def map(key: LongWritable, value: Text, output: OutputCollector[Text, IntWritable], reporter: Reporter): Unit =
-      val line: String = value.toString
-      val segments = line.split("[$][-][-][>]")
-
-      val newKey = (-1 * segments(1).toInt).toString + "," + segments(0)
-
-      logger.debug("key:Val -> { ", newKey + ":" + 0 + " }")
-      System.out.println("key:Val -> { " + newKey + ":" + 0 + " }")
-      output.collect(new Text(newKey), valueCount)
 
   //reducer implementation for part 2
   class ReduceStageOne extends MapReduceBase with Reducer[Text, IntWritable, Text, IntWritable] : //Reducer implementation for Q1
-
+    def addTwoInts(a: IntWritable,b:IntWritable) : IntWritable = {
+      new IntWritable(a.get+b.get)
+    }
     override def reduce(key: Text, values: util.Iterator[IntWritable], output: OutputCollector[Text, IntWritable], reporter: Reporter): Unit =
-      val sum = values.asScala.reduce((val1, val2) => new IntWritable(val1.get() + val2.get()))
+      val sum = values.asScala.foldLeft(new IntWritable(0))(addTwoInts(_,_))//reduce((val1, val2) => new IntWritable(val1.get() + val2.get()))
       output.collect(key, new IntWritable(sum.get()))
-
-  class Reduce extends MapReduceBase with Reducer[Text, IntWritable, Text, IntWritable] : //Reducer implementation for Q1
-    override def reduce(key: Text, values: util.Iterator[IntWritable], output: OutputCollector[Text, IntWritable], reporter: Reporter): Unit =
-      val segments = key.toString.split(",")
-
-      output.collect(new Text(segments(1)), new IntWritable(-1 * segments(0).toInt))
 }
