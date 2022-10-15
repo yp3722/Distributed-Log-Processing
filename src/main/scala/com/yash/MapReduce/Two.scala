@@ -11,12 +11,14 @@ import java.util
 import scala.jdk.CollectionConverters.*
 import scala.util.matching.Regex
 
+//Produces intermidiatery results which needs to be sorted
 object Two {
   val logger = LoggerFactory.getLogger(classOf[Two.type]) //logger instantiation
   val logMsgRegexPattern = new Regex(Parameters.getLogRegex);
 
   val hrs: Boolean = Parameters.getHourly
 
+  //method to run jobTwo stage 1
   @main def runMapReduceTwo(inputPath: String, outputPath: String) =
     val conf: JobConf = new JobConf(this.getClass)
     conf.setJobName("JobTwoStageOne")
@@ -33,6 +35,7 @@ object Two {
     JobClient.runJob(conf)
     logger.info("Job Two Stage One has finished")
 
+  // creates K:V pairs based on timesinterval and Int value 0 or 1 depending on Log type = Error and regex presence in message
   class MapStageOne extends MapReduceBase with Mapper[LongWritable, Text, Text, IntWritable] :
 
     private val timeInterval = new Text()

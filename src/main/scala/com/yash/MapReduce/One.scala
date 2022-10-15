@@ -16,7 +16,7 @@ object One {
   val logMsgRegexPattern = new Regex(Parameters.getLogRegex);
 
   val hrs: Boolean = Parameters.getHourly
-
+  //method to run job one
   @main def runMapReduceOne(inputPath: String, outputPath: String) =
     val conf: JobConf = new JobConf(this.getClass)
     conf.setJobName("JobOne")
@@ -32,11 +32,12 @@ object One {
     conf.setOutputFormat(classOf[TextOutputFormat[Text, Text]])
     FileInputFormat.setInputPaths(conf, new Path(inputPath)) // new Path(args[0])
     FileOutputFormat.setOutputPath(conf, new Path(outputPath))
+    logger.info("Job One has Started")
     JobClient.runJob(conf)
     logger.info("Job One has Finished")
 
   class Map extends MapReduceBase with Mapper[LongWritable, Text, Text, Text] :
-
+    // creates a key based on time interval and list of integer values representing a log level and presence of regex in message 
     private val timeInterval = new Text()
     private val typeCount = new Text()
 
@@ -76,12 +77,14 @@ object One {
 
   //reducer implementation for part 2
   class Reduce extends MapReduceBase with Reducer[Text, Text, Text, Text] : //Reducer implementation for Q1
+    
     override def reduce(key: Text, values: util.Iterator[Text], output: OutputCollector[Text, Text], reporter: Reporter): Unit =
       //val summary = values.asScala.reduce(sumarizeStats)
       val summary = values.asScala.foldLeft(new Text("0 0 0 0 0"))(sumarizeStats(_,_))
       output.collect(key, summary)
 
     // function accepts two Texts of format "error_count warn_count info_count debug_count" and returns a Text which represents column wise sum
+    // eg - v1 = 0 0 1 0 1, v2= 0 1 0 0 1 output = 0 1 1 0 2 
     def sumarizeStats(valueOne: Text, valueTwo: Text): Text = {
       val oneList = valueOne.toString.split(" ")
       val twoList = valueTwo.toString.split(" ")

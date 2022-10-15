@@ -13,7 +13,7 @@ import scala.util.matching.Regex
 
 object Three {
   val logger = LoggerFactory.getLogger(classOf[Three.type])
-
+  //runs map reduce Three
   @main def runMapReduceThree(inputPath: String, outputPath: String) =
     val conf: JobConf = new JobConf(this.getClass)
     conf.setJobName("JobThree")
@@ -29,6 +29,7 @@ object Three {
     JobClient.runJob(conf)
     logger.info("Job Three has started")
 
+  //produces K:V pairs as outputs of the form logType : 1
   class Map extends MapReduceBase with Mapper[LongWritable, Text, Text, IntWritable] : //mapper implementation for Q1
 
     private final val one = new IntWritable(1)
@@ -49,6 +50,7 @@ object Three {
       output.collect(logType, one)
 
   //reducer implementation for Q3
+  //adds all the 1s to obtain final count
   class Reduce extends MapReduceBase with Reducer[Text, IntWritable, Text, IntWritable] : //Reducer implementation for Q1
 
     override def reduce(key: Text, values: util.Iterator[IntWritable], output: OutputCollector[Text, IntWritable], reporter: Reporter): Unit =

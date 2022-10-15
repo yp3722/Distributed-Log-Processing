@@ -14,7 +14,7 @@ import scala.util.matching.Regex
 object Four {
   val logger = LoggerFactory.getLogger(classOf[Four.type]) //logger instantiation
   val logMsgRegexPattern = new Regex(Parameters.getLogRegex) //new Regex("([a-c][e-g][0-3]|[A-Z][5-9][f-w]){5,15}");
-
+  
   @main def runMapReduceFour(inputPath: String, outputPath: String) =
     val conf: JobConf = new JobConf(this.getClass)
     conf.setJobName("JobFour")
@@ -30,8 +30,8 @@ object Four {
     JobClient.runJob(conf)
     logger.info("Job Four has started")
 
+  //Produces K:V pairs of form logType: message length if it contains regex pattern else 0
   class Map extends MapReduceBase with Mapper[LongWritable, Text, Text, IntWritable] : //mapper implementation for Q1
-
 
     private val logType = new Text()
     private val messageLen = new IntWritable(0)
@@ -56,6 +56,7 @@ object Four {
     }
 
   //reducer implementation for Q4
+  //for given log type reduces to max among two lenghts 
   class Reduce extends MapReduceBase with Reducer[Text, IntWritable, Text, IntWritable] : //Reducer implementation for Q1
 
     override def reduce(key: Text, values: util.Iterator[IntWritable], output: OutputCollector[Text, IntWritable], reporter: Reporter): Unit =
