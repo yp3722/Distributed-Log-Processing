@@ -3,7 +3,7 @@
 
 Create a tool to generate various statistics from large log files in a **distributed fashion using map/reduce**
 
-Deployment Video Link : [Movie Link](https://www.youtube.com)
+Deployment Video Link : [Movie Link](https://www.youtube.com/watch?v=4yClpG2j6E)
 
 
 ## Features
