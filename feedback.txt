@@ -21,8 +21,8 @@ Grading Evaluation:
 - the program crashes without completing the core functionality: up to 15% lost;
 	* program doesn't compile: -0%
 - the documentation exists but it is insufficient to understand your program design and models and how you assembled and deployed all components of your mappers and reducers: up to 15% lost;
-	* documentation exists: -5%
+	* documentation exists: -0%
 
-Missing test cases and video. Everything else is thorough.
+Missing test cases. Everything else is thorough.
 
-Final Grade: 0%
+Final Grade: 5%
