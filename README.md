@@ -1,23 +1,39 @@
-# StatsForLogs - Yash Pharande
+# StatsForLogs - A Distributed Log Processing System for Enormous Log Files
 
 
-Create a tool to generate various statistics from large log files in a **distributed fashion using map/reduce**
-
-Deployment Video Link : [Movie Link](https://www.youtube.com/watch?v=4yClpG2j6E)
-
+A distributed system built with **Hadoop** File System and deployed on **AWS** that employs a **map-reduce** approach to analyze substantial amounts of log data and extract meaningful statistics.
 
 ## Features
-* Configurable timeintervals hourly or per minute
+* Easily configurable time intervals
 * Easy to install and run
-* Will handle incorrect inputs with imporper formats
+* Capable of handling incorrect inputs with improper formats
 
+## Map Reduce Fundamentals
 
-## Description of Tasks
+![Alt text](mapreduceExplained.png)
+
+Map Phase:
+
+    Input data is divided into chunks.
+    A "map" function is applied independently to each chunk, processing the input and generating intermediate key-value pairs.
+
+Shuffle and Sort Phase:
+
+    The intermediate key-value pairs are shuffled and sorted based on their keys to ensure that values with the same key end up on the same node.
+
+Reduce Phase:
+
+    A "reduce" function is applied to each group of key-value pairs with the same key.
+    The reduce function processes these values and produces the final output.
+
+Throughout these phases, HDFS (Hadoop Distributed File System) plays a pivotal role by serving as the storage platform for input and intermediate data. It facilitates parallel data processing by allowing nodes in the Hadoop cluster to access and process portions of the data concurrently. Additionally, HDFS ensures fault tolerance through the distribution of data blocks and their replicas across multiple nodes, enabling seamless processing even in the presence of node failures.
+
+## Examples
 
 ### One
 
 
-In this task output will show the distribution of different types of messages across predefined time intervals & injected string instances of the designated regex pattern for these log message types.
+**In this example we will display how different types of messages are spread out over set time intervals. It will also show examples of added text that matches a specific pattern for these message types.**
 
 Output Column Format
 ```
@@ -35,12 +51,12 @@ Output Rows
 04:33:00.0 - 04:33:59.9	 0   2   10  0   2
 ``` 
 
-**eg - for interval 04:29:00 to 04:29:59 we have  0 - Errors, 2 - Warns, 8 - Info, 2 - debug and 1 - regex containing message.**
+eg - for interval 04:29:00 to 04:29:59 we have  0 - Errors, 2 - Warns, 8 - Info, 2 - debug and 1 - regex containing message.
 
 ---
 ### Two
 
-In this task output will display the number of ERROR messages with injected string instances of the designated regex pattern sorted in descending order according to the count
+**The result exhibits the count of ERROR messages along with their corresponding string messages, following the designated regex pattern, arranged in descending order based on the count.**
 
 Output Rows
 ```
@@ -57,7 +73,7 @@ Invalid Log Messages  	0
 ---
 ### Three
 
-In this task output will display the total number of different error types(DEBUG, INFO, WARN, ERROR) present in the log files.
+In this example output displays the total number of different error types(DEBUG, INFO, WARN, ERROR) present in the log files.
 
 Output Rows
 ```
@@ -70,7 +86,7 @@ WARN	40543
 ---
 ### Four
 
-In this task output will display the number of characters in each log message or each log message type that contain the highest number of characters in the detected instances of the designated regex pattern.
+Output  displays the highest number of characters in each log message type that that contains string of designated regex pattern.
 
 Output Rows
 ```
