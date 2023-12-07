@@ -1,7 +1,7 @@
 # StatsForLogs - A Distributed Log Processing System for Enormous Log Files
 
 
-A distributed system built with **Hadoop** File System and deployed on **AWS** that employs a **map-reduce** approach to analyze substantial amounts of log data and extract meaningful statistics.
+A distributed system built with **Hadoop File System(HDFS)** and deployed on **AWS** that employs a **map-reduce** approach to analyze substantial amounts of log data and extract meaningful statistics.
 
 ## Features
 * Easily configurable time intervals
